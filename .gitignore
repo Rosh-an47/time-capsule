@@ -1,0 +1,13 @@
+# Dependencies (regenerated via npm install)
+node_modules/
+
+# Environment variables (contains secrets like database passwords)
+.env
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor files (your personal editor settings)
+.vscode/
+.idea/
