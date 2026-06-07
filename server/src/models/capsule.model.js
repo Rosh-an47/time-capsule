@@ -20,6 +20,9 @@ const capsuleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description:{
+        type: String
+    },
     unlockDate: {
         type: Date,
         required: true
