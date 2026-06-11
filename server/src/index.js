@@ -1,15 +1,13 @@
 require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
 const connectDB = require('./db/index.js');
-const app = express();
+const app = require("./app.js")
 
-connectDB();
-
-app.get('/', (req,res)=>{
-    res.send("Time Capsule Server is Running");
-});
-
-app.listen(process.env.PORT, ()=>{
-    console.log(`Server is running in port ${process.env.PORT}`);
+connectDB()
+.then(()=>{
+    app.listen(process.env.PORT || 8000, ()=>{
+        console.log(`Server is running at port: ${process.env.PORT}`);
+    })
+})
+.catch((err)=>{
+    console.log("Mongo DB Connection Failed!!! ", err);
 });
