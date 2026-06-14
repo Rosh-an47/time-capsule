@@ -1,5 +1,22 @@
 const User = require("../models/user.model.js");
 const uploadOnCloudinary = require("../utils/cloudinary.js");
+const jwt = require("jsonwebtoken");
+
+const generateAccessAndRefreshTokens = async(userId) =>{
+    try {
+        const user = await User.findById(userId);
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generateRefreshToken();
+
+        user.refreshToken = refreshToken;
+        await user.save({validateBeforeSave: false});
+
+        return {accessToken, refreshToken};
+        
+    } catch (error) {
+        throw new Error("Error Generating access and refresh token ");  
+    }
+}
 
 const registerUser = async (req, res) => {
     try {
@@ -59,4 +76,64 @@ const registerUser = async (req, res) => {
     }
 };
 
-module.exports = registerUser;
+const loginUser = async (req, res) => {
+    try {
+        // req body -> data
+        // username or email
+        // find the user
+        // check password
+        // access and refresh tokem
+
+        const {email, username, password} = req.body;
+
+        if(!username && !email){
+            throw new Error("Username or Email is required");
+        }
+
+        const user = await User.findOne({$or : [{username}, {email}]});
+
+        if(!user){
+            console.log("User Doesn't exists!!");
+            throw new Error("User doesn't exists!");
+        }
+
+        const isPasswordValid = await user.isPasswordCorrect(password);
+
+        if(!isPasswordValid){
+            console.log("Password is Incorrect");
+            throw new Error("Password is Incorrect");
+        }
+
+        const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id);
+
+        //user lai edit gareni huncha
+        const loggedInUser = User.findById(user._id).select("-password -refreshToken");
+
+        //send cookies
+        //can be seen from frontend now but can only be edited from server with this option
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        return res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json({
+            message: "Logged In successfully",
+            user: loggedInUser,
+            accessToken,
+            refreshToken
+        });
+    } catch (err) {
+        console.error("Error Loggin in!! ", err);
+        return res.status(500).json({
+            message: err.message || "Server Error"
+        });
+    }
+}
+
+
+
+module.exports = {registerUser, loginUser};

@@ -1,5 +1,5 @@
 const {Router} = require("express");
-const registerUser = require("../controllers/user.controller.js");
+const {registerUser, loginUser} = require("../controllers/user.controller.js");
 const upload = require("../middlewares/multer.middleware.js");
 const router = Router();
 
