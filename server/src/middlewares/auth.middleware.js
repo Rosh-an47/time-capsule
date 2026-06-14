@@ -1,7 +1,7 @@
 const { jwt } = require("jsonwebtoken");
 const User = require("../models/user.model.js");
 
-const verifyJwt = async(req, res, next) => {
+const verifyJwt = async(req, _, next) => {
     try {
         //mobile ma cookie hunna
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
