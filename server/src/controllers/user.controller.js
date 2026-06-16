@@ -59,7 +59,7 @@ const registerUser = async (req, res) => {
             profilePicture: profilePicture?.url || "",
         });
 
-        const createdUser = await User.findById(user._id).select("-password -refreshToken");
+        const createdUser = await User.findById(user._id).select("-password -refreshToken").lean();
         if (!createdUser) {
             return res.status(500).json({ message: "Error creating user!!" });
         }
@@ -107,7 +107,7 @@ const loginUser = async (req, res) => {
         const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id);
 
         //user lai edit gareni huncha
-        const loggedInUser = User.findById(user._id).select("-password -refreshToken");
+        const loggedInUser = await User.findById(user._id).select("-password -refreshToken").lean();
 
         //send cookies
         //can be seen from frontend now but can only be edited from server with this option
