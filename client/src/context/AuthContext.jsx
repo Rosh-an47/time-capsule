@@ -12,13 +12,24 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     //check if user is logged in 
-    useEffect(()=>{
-        setLoading(false);
+    useEffect(() => {
+        const checkUser = async()=> {
+        try {
+            const response = await api.get("/users/me");
+            setUser(response.data.data);
+        } catch (err) {
+            //user not logged in
+            setUser(null);
+        } finally {
+            setLoading(false);//Checking Done
+        }
+        };
+        checkUser();
     }, []);
 
-    const register = async (formData) => {
-        try {
-            const response = await api.post("users/register", formData, {
+    const register = async (formData) =>{
+        try{
+            const response = await api.post("users/register", formData,{
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
