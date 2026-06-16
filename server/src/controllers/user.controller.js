@@ -1,6 +1,6 @@
-const User = require("../models/user.model.js");
-const uploadOnCloudinary = require("../utils/cloudinary.js");
-const jwt = require("jsonwebtoken");
+import User from "../models/user.model.js";
+import uploadOnCloudinary from "../utils/cloudinary.js";
+import jwt from "jsonwebtoken";
 
 const generateAccessAndRefreshTokens = async(userId) =>{
     try {
@@ -186,4 +186,4 @@ const getCurrentUser = async(req, res)=>{
 };
 
 
-module.exports = {registerUser, loginUser, logoutUser, getCurrentUser};
+export { registerUser, loginUser, logoutUser, getCurrentUser };

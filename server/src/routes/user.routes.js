@@ -1,7 +1,7 @@
-const {Router} = require("express");
-const {registerUser, loginUser, logoutUser, getCurrentUser} = require("../controllers/user.controller.js");
-const upload = require("../middlewares/multer.middleware.js");
-const verifyJwt = require("../middlewares/auth.middleware.js");
+import { Router } from "express";
+import { registerUser, loginUser, logoutUser, getCurrentUser } from "../controllers/user.controller.js";
+import upload from "../middlewares/multer.middleware.js";
+import verifyJwt from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.route("/register").post(upload.fields([
@@ -19,4 +19,4 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/me").get(verifyJwt, getCurrentUser);
 
-module.exports = router;
+export default router;

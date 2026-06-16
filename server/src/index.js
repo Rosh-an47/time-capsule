@@ -1,6 +1,6 @@
-require('dotenv').config();
-const connectDB = require('./db/index.js');
-const app = require("./app.js")
+import 'dotenv/config';  // dotenv handles this differently in ESM
+import connectDB from './db/index.js';
+import app from './app.js';
 
 connectDB()
 .then(()=>{

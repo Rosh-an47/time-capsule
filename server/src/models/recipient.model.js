@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const recipientSchema = new mongoose.Schema({
     capsule:{
@@ -30,4 +30,4 @@ const recipientSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("Recipient", recipientSchema);
+export default mongoose.model('Recipient', recipientSchema);

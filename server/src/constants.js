@@ -1,3 +1,1 @@
-const DB_NAME = "timecapsule";
-
-module.exports = {DB_NAME};
+export const DB_NAME = "timecapsule";

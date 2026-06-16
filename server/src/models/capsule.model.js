@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const capsuleSchema = new mongoose.Schema({
     creator: {
@@ -35,4 +35,4 @@ const capsuleSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("Capsule", capsuleSchema);
+export default mongoose.model('Capsule', capsuleSchema);
