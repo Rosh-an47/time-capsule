@@ -1,4 +1,4 @@
-const { jwt } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user.model.js");
 
 const verifyJwt = async(req, _, next) => {
@@ -23,6 +23,7 @@ const verifyJwt = async(req, _, next) => {
         next();
     } catch (error) {
         console.log("Error in authentication!!", error);
+        throw new Error("Error in authentication!!", error)
     }
 }
 
