@@ -78,61 +78,52 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        // req body -> data
-        // username or email
-        // find the user
-        // check password
-        // access and refresh tokem
+        const { email, username, password } = req.body;
 
-        const {email, username, password} = req.body;
-
-        if(!username && !email){
-            throw new Error("Username or Email is required");
+        if (!username && !email) {
+            return res.status(400).json({ message: "Username or Email is required" });
         }
 
-        const user = await User.findOne({$or : [{username}, {email}]});
+        const user = await User.findOne({ $or: [{ username }, { email }] });
 
-        if(!user){
-            console.log("User Doesn't exists!!");
-            throw new Error("User doesn't exists!");
+        if (!user) {
+            return res.status(404).json({ message: "User doesn't exist!" });
         }
 
         const isPasswordValid = await user.isPasswordCorrect(password);
 
-        if(!isPasswordValid){
-            console.log("Password is Incorrect");
-            throw new Error("Password is Incorrect");
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: "Password is Incorrect" });
         }
 
-        const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(user._id);
+        const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
 
-        //user lai edit gareni huncha
-        const loggedInUser = await User.findById(user._id).select("-password -refreshToken").lean();
+        const loggedInUser = await User.findById(user._id)
+            .select("-password -refreshToken")
+            .lean();
 
-        //send cookies
-        //can be seen from frontend now but can only be edited from server with this option
         const options = {
             httpOnly: true,
             secure: true
-        }
+        };
 
         return res
-        .status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
-        .json({
-            message: "Logged In successfully",
-            user: loggedInUser,
-            accessToken,
-            refreshToken
-        });
+            .status(200)
+            .cookie("accessToken", accessToken, options)
+            .cookie("refreshToken", refreshToken, options)
+            .json({
+                message: "Logged In successfully",
+                user: loggedInUser,
+                accessToken,
+                refreshToken
+            });
     } catch (err) {
         console.error("Error Loggin in!! ", err);
         return res.status(500).json({
             message: err.message || "Server Error"
         });
     }
-}
+};
 
 const logoutUser = async (req,res) =>{
     const userId = req.user._id;
