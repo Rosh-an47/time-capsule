@@ -47,7 +47,6 @@ const createCapsule = async(req, res) =>{
             });
         }
 
-
         if(!recipients){
             console.log("Atleast 1 recipient is Required!!");
             return res.status(400).json({
@@ -153,9 +152,12 @@ const createCapsule = async(req, res) =>{
 
 
     } catch (error){
-        console.log("createCapsule Error");
+        console.log("createCapsule Error", error);
         return res.status(500).json({
             message: "Capsule Creation Failed!!!"
         });
     }
 }
+
+
+export {createCapsule};

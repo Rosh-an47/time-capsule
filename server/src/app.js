@@ -18,12 +18,13 @@ app.use(cookieParser())
 
 //routes import
 import userRouter from './routes/user.routes.js';
-
+import capsuleRouter from './routes/capsule.routes.js';
 
 //routes declaration
 // app.use("/users", userRouter)
 //api version vanne ramro practice
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/capsules", capsuleRouter);
 //http://localhost:8000/api/v1/users/register or login
 
 
