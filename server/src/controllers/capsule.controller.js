@@ -136,6 +136,12 @@ const createCapsule = async(req, res) =>{
             });
 
             createdRecipients.push(recipient);
+
+            await sendCapsuleNotification(recipientData.email, {
+                caption: capsule.caption,
+                unlockDate: capsule.unlockDate,
+                contentType: capsule.contentType,
+            });
         }
 
         const populatedCapsule = await Capsule.findById(capsule._id)
