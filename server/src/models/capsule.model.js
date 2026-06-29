@@ -30,6 +30,10 @@ const capsuleSchema = new mongoose.Schema({
     isUnlocked: {
         type: Boolean,
         default: false
+    },
+    notified: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
